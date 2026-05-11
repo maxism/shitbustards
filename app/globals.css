@@ -44,6 +44,7 @@ body {
   background: #000;
   overflow: hidden;
   z-index: 100;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
 }
 
 .sidebar__bg {
@@ -115,19 +116,22 @@ body {
 .sidebar__platforms a {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 14px 20px;
-  font-size: 14px;
+  justify-content: flex-start;
+  padding: 9px 12px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.14px;
+  letter-spacing: 0.13px;
   color: var(--cream);
   text-decoration: none;
-  text-align: center;
-  transition: opacity 0.15s;
+  border-radius: 8px;
+  transition: background 0.15s, opacity 0.15s;
 }
 
-.sidebar__platforms a:hover { opacity: 0.65; }
+.sidebar__platforms a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.09);
+}
 
 .sidebar__bottom {
   margin-top: auto;
@@ -179,28 +183,32 @@ body {
 .main {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
-  padding: 80px 144px 80px;
+  padding: 72px 80px 80px;
+}
+
+body.player-open .main {
+  padding-bottom: 152px;
 }
 
 /* ─── EPISODES GRID ─────────────────────────────────── */
 
 .episodes {
   display: grid;
-  grid-template-columns: repeat(3, 373px);
-  gap: 24px 40px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 32px;
 }
 
 .ep {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 }
 
 .ep__thumb {
   position: relative;
-  width: 373px;
-  height: 256px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   flex-shrink: 0;
   background: #1f1f1f;
@@ -212,7 +220,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 
 .ep:hover .ep__thumb img {
@@ -246,6 +254,19 @@ body {
 .ep.is-playing .ep__play-btn .icon-play { display: none; }
 .ep.is-playing .ep__play-btn .icon-pause { display: block; }
 
+/* "now playing" indicator bar */
+.ep.is-playing .ep__thumb::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--cream);
+  z-index: 4;
+  pointer-events: none;
+}
+
 .ep__watermark {
   position: absolute;
   inset: 0;
@@ -267,23 +288,51 @@ body {
   text-align: center;
 }
 
+/* duration badge */
+.ep__dur {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  z-index: 3;
+  pointer-events: none;
+}
+
 .ep__info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
+}
+
+/* episode number */
+.ep__num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--gray);
+  line-height: 1;
 }
 
 .ep__title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0.18px;
+  line-height: 1.35;
+  letter-spacing: 0.1px;
   color: #000;
 }
 
 .ep__date {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 400;
   line-height: 1;
   letter-spacing: 0.13px;
   color: var(--gray);
@@ -361,19 +410,6 @@ body {
   white-space: nowrap;
 }
 
-/* ─── MOBILE DESC ───────────────────────────────────── */
-
-.mob-desc {
-  display: none;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 0.13px;
-  color: #000;
-  text-align: center;
-  padding: 16px 58px 24px;
-}
-
 /* ─── SIDEBAR OVERLAY (mobile) ──────────────────────── */
 
 .sidebar-mask {
@@ -410,7 +446,16 @@ body {
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  gap: 16px;
+  gap: 14px;
+}
+
+/* episode artwork */
+.player__art {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
 .player__playbtn {
@@ -433,6 +478,30 @@ body {
 .player__playbtn .icon-pause { display: none; }
 .player.is-playing .player__playbtn .icon-play { display: none; }
 .player.is-playing .player__playbtn .icon-pause { display: block; }
+
+/* skip ±15s buttons */
+.player__skip {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  color: var(--gray);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 5px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.player__skip span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.player__skip:hover { color: var(--cream); }
 
 .player__track {
   flex: 1;
@@ -492,6 +561,27 @@ body {
   height: 4px;
 }
 
+/* playback speed */
+.player__speed {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  background: none;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px 7px;
+  white-space: nowrap;
+  min-width: 38px;
+  text-align: center;
+  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: -0.2px;
+  line-height: 1;
+}
+
+.player__speed:hover { color: var(--cream); border-color: #555; }
+
 .player__time {
   flex-shrink: 0;
   font-size: 12px;
@@ -532,32 +622,29 @@ body {
   .sidebar-mask.is-visible { opacity: 1; }
 
   .mob-header { display: flex; }
-  .mob-desc { display: block; }
 
   .main {
     margin-left: 0;
-    padding: 88px 14px 48px;
+    padding: 88px 16px 48px;
+  }
+
+  body.player-open .main {
+    padding-bottom: 120px;
   }
 
   .episodes {
     grid-template-columns: 1fr;
-    gap: 24px;
-    max-width: 373px;
-    margin: 0 auto;
+    gap: 28px;
   }
 
-  .ep__thumb {
-    width: 100%;
-    height: 0;
-    padding-bottom: 68.6%;
-  }
-
-  .player__inner { padding: 0 12px; gap: 10px; }
+  .player__inner { padding: 0 12px; gap: 8px; }
   .player__title { font-size: 12px; }
   .player__time { font-size: 11px; }
+  .player__art { display: none; }
+  .player__speed { display: none; }
 }
 
 @media (min-width: 961px) and (max-width: 1300px) {
-  .main { padding: 60px 40px; }
-  .episodes { grid-template-columns: repeat(2, 373px); }
+  .main { padding: 60px 48px; }
+  .episodes { grid-template-columns: repeat(2, 1fr); }
 }

@@ -51,7 +51,7 @@ export function Sidebar() {
           <p className="sidebar__sub-label">Подпишись на канал:</p>
           <a
             className="sidebar__tg"
-            href="https://t.me/shitbastards"
+            href="https://t.me/shitbustards"
             target="_blank"
             rel="noopener noreferrer"
           >

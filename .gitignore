@@ -1,3 +1,16 @@
+# Next.js
 .next/
 node_modules/
-dist/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Tooling
+.swarm/
+.claude/
+.claude-flow/
+.mcp.json
+ruvector.db
+
+# OS
+.DS_Store

@@ -1,5 +1,5 @@
 import type { Episode } from '@/lib/episodes';
-import { formatDate } from '@/lib/episodes';
+import { formatDate, formatDuration } from '@/lib/episodes';
 
 export function EpisodeCard({ episode }: { episode: Episode }) {
   return (
@@ -8,6 +8,7 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
       data-audio={episode.audioUrl}
       data-title={episode.title}
       data-dur={episode.durationSec}
+      data-image={episode.imageUrl}
     >
       <div className="ep__thumb">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -34,8 +35,14 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
             СТАРДС
           </div>
         </div>
+        {episode.durationSec > 0 && (
+          <div className="ep__dur">{formatDuration(episode.durationSec)}</div>
+        )}
       </div>
       <div className="ep__info">
+        {episode.episodeNumber > 0 && (
+          <span className="ep__num">Эп. {episode.episodeNumber}</span>
+        )}
         <span className="ep__title">{episode.title}</span>
         <span className="ep__date">{formatDate(episode.publishDate)}</span>
       </div>

@@ -32,11 +32,6 @@ export default async function Home() {
 
       {/* ─── Main ────────────────────────────────────── */}
       <main className="main">
-        <p className="mob-desc">
-          Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.
-          Два ведущих, ноль сценария, без фильтров.
-        </p>
-
         <div className="episodes">
           {episodes.map((ep) => (
             <EpisodeCard key={ep.guid} episode={ep} />
