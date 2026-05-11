@@ -1,0 +1,563 @@
+/*
+  Druk Cond Cy — коммерческий шрифт от Commercial Type.
+  Положи файлы в папку public/fonts/:
+    public/fonts/DrukCondCy-Super.woff2
+    public/fonts/DrukCondCy-Super.woff
+*/
+@font-face {
+  font-family: 'Druk Cond Cy';
+  src: url('/fonts/DrukCondCy-Super.woff2') format('woff2'),
+       url('/fonts/DrukCondCy-Super.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cream: #fef2e2;
+  --gray: #a3a3a3;
+  --sidebar-w: 240px;
+}
+
+html { height: 100%; }
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─────────────────────────────────────── */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.sidebar__bg {
+  position: absolute;
+  inset: -10%;
+  background-image: url('https://cdn.mave.digital/storage/podcasts/6dad6969-58b3-471d-a5ec-acfd78f36b52/images/dc158682-183d-443a-a41b-234d02225150_600.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px);
+  opacity: 0.9;
+}
+
+.sidebar__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 32px 0 40px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar__inner::-webkit-scrollbar { display: none; }
+
+.sidebar__bird {
+  display: block;
+  width: 73px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.sidebar__title {
+  font-family: 'Druk Cond Cy', 'Arial Narrow', Impact, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 100px;
+  line-height: 0.76;
+  letter-spacing: 1px;
+  color: var(--cream);
+  text-align: center;
+  margin-top: 6px;
+}
+
+.sidebar__divider {
+  width: 24px;
+  height: 1px;
+  background: var(--cream);
+  margin: 24px auto;
+}
+
+.sidebar__desc {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.13px;
+  color: var(--cream);
+  text-align: center;
+  width: 176px;
+}
+
+.sidebar__platforms {
+  list-style: none;
+  margin-top: 44px;
+  width: 170px;
+}
+
+.sidebar__platforms a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.14px;
+  color: var(--cream);
+  text-decoration: none;
+  text-align: center;
+  transition: opacity 0.15s;
+}
+
+.sidebar__platforms a:hover { opacity: 0.65; }
+
+.sidebar__bottom {
+  margin-top: auto;
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.sidebar__sub-label {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.13px;
+  color: var(--cream);
+}
+
+.sidebar__tg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 20px;
+  width: 170px;
+  border: 1px solid var(--cream);
+  border-radius: 1000px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.sidebar__tg:hover { opacity: 0.65; }
+
+.sidebar__tg svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.sidebar__tg span {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.14px;
+  color: var(--cream);
+}
+
+/* ─── MAIN ─────────────────────────────────────────── */
+
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding: 80px 144px 80px;
+}
+
+/* ─── EPISODES GRID ─────────────────────────────────── */
+
+.episodes {
+  display: grid;
+  grid-template-columns: repeat(3, 373px);
+  gap: 24px 40px;
+}
+
+.ep {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.ep__thumb {
+  position: relative;
+  width: 373px;
+  height: 256px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #1f1f1f;
+}
+
+.ep__thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.ep:hover .ep__thumb img {
+  transform: scale(1.04);
+}
+
+.ep__play-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+
+.ep:hover .ep__play-btn,
+.ep.is-playing .ep__play-btn {
+  opacity: 1;
+}
+
+.ep__play-btn svg {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.ep__play-btn .icon-pause { display: none; }
+.ep.is-playing .ep__play-btn .icon-play { display: none; }
+.ep.is-playing .ep__play-btn .icon-pause { display: block; }
+
+.ep__watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ep__wm-text {
+  font-family: 'Druk Cond Cy', 'Arial Narrow', Impact, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 87px;
+  line-height: 0.76;
+  letter-spacing: 0.87px;
+  color: rgba(255, 255, 255, 0.13);
+  text-align: center;
+}
+
+.ep__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ep__title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.18px;
+  color: #000;
+}
+
+.ep__date {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.13px;
+  color: var(--gray);
+}
+
+/* ─── MOBILE HEADER ─────────────────────────────────── */
+
+.mob-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  overflow: hidden;
+  z-index: 150;
+}
+
+.mob-header__bg {
+  position: absolute;
+  inset: -10%;
+  background-image: url('https://cdn.mave.digital/storage/podcasts/6dad6969-58b3-471d-a5ec-acfd78f36b52/images/dc158682-183d-443a-a41b-234d02225150_600.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+}
+
+.mob-header__tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mob-header__row {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.mob-burger {
+  position: absolute;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+}
+
+.mob-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cream);
+  border-radius: 1px;
+}
+
+.mob-header__title {
+  font-family: 'Druk Cond Cy', 'Arial Narrow', Impact, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 55px;
+  line-height: 0.76;
+  letter-spacing: 0.55px;
+  color: var(--cream);
+  white-space: nowrap;
+}
+
+/* ─── MOBILE DESC ───────────────────────────────────── */
+
+.mob-desc {
+  display: none;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.13px;
+  color: #000;
+  text-align: center;
+  padding: 16px 58px 24px;
+}
+
+/* ─── SIDEBAR OVERLAY (mobile) ──────────────────────── */
+
+.sidebar-mask {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* ─── AUDIO PLAYER ───────────────────────────────────── */
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: #111;
+  z-index: 400;
+  border-top: 1px solid #2a2a2a;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.player.is-visible {
+  transform: translateY(0);
+}
+
+.player__inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  gap: 16px;
+}
+
+.player__playbtn {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--cream);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+
+.player__playbtn:hover { opacity: 0.8; }
+
+.player__playbtn svg { width: 18px; height: 18px; }
+.player__playbtn .icon-pause { display: none; }
+.player.is-playing .player__playbtn .icon-play { display: none; }
+.player.is-playing .player__playbtn .icon-pause { display: block; }
+
+.player__track {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.player__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 0.13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player__seek {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.player__seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cream);
+  cursor: pointer;
+}
+
+.player__seek::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cream);
+  cursor: pointer;
+  border: none;
+}
+
+.player__seek::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--cream) var(--seek-pct, 0%),
+    #333 var(--seek-pct, 0%)
+  );
+  border-radius: 2px;
+  height: 4px;
+}
+
+.player__time {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--gray);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.player__close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--gray);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.player__close:hover { color: var(--cream); }
+
+/* ─── RESPONSIVE ────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 200;
+  }
+
+  .sidebar.is-open { transform: translateX(0); }
+
+  .sidebar-mask { display: block; }
+  .sidebar-mask.is-visible { opacity: 1; }
+
+  .mob-header { display: flex; }
+  .mob-desc { display: block; }
+
+  .main {
+    margin-left: 0;
+    padding: 88px 14px 48px;
+  }
+
+  .episodes {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 373px;
+    margin: 0 auto;
+  }
+
+  .ep__thumb {
+    width: 100%;
+    height: 0;
+    padding-bottom: 68.6%;
+  }
+
+  .player__inner { padding: 0 12px; gap: 10px; }
+  .player__title { font-size: 12px; }
+  .player__time { font-size: 11px; }
+}
+
+@media (min-width: 961px) and (max-width: 1300px) {
+  .main { padding: 60px 40px; }
+  .episodes { grid-template-columns: repeat(2, 373px); }
+}
