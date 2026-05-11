@@ -13,6 +13,11 @@ export function Sidebar() {
   return (
     <aside className="sidebar" id="sidebar">
       <div className="sidebar__bg" />
+      <button className="sidebar__close" id="sidebarCloseBtn" aria-label="Закрыть меню">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 3L17 17M17 3L3 17" stroke="#fef2e2" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </button>
       <div className="sidebar__inner">
 
         {/* Замени на свой файл: public/fonts/bird.svg */}
@@ -24,11 +29,12 @@ export function Sidebar() {
           aria-hidden="true"
         />
 
-        <div className="sidebar__title">
-          ШИТБА
-          <br />
-          СТАРДС
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="sidebar__logo"
+          src="/logo.svg"
+          alt="ШИТБАСТАРДС"
+        />
 
         <div className="sidebar__divider" />
 

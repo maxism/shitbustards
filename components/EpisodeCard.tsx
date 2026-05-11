@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import type { Episode } from '@/lib/episodes';
-import { formatDate, formatDuration } from '@/lib/episodes';
+import { formatDate, formatDuration, generateSlug } from '@/lib/episodes';
 
 export function EpisodeCard({ episode }: { episode: Episode }) {
   return (
@@ -28,24 +29,19 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
             <rect x="29" y="16" width="6" height="20" rx="1" fill="#000" />
           </svg>
         </div>
-        <div className="ep__watermark">
-          <div className="ep__wm-text">
-            ШИТБА
-            <br />
-            СТАРДС
-          </div>
-        </div>
-        {episode.durationSec > 0 && (
+{episode.durationSec > 0 && (
           <div className="ep__dur">{formatDuration(episode.durationSec)}</div>
         )}
       </div>
-      <div className="ep__info">
+
+      {/* Info area — navigates to episode page; AudioPlayer ignores clicks here */}
+      <Link href={`/episodes/${generateSlug(episode)}`} className="ep__info">
         {episode.episodeNumber > 0 && (
           <span className="ep__num">Эп. {episode.episodeNumber}</span>
         )}
         <span className="ep__title">{episode.title}</span>
         <span className="ep__date">{formatDate(episode.publishDate)}</span>
-      </div>
+      </Link>
     </article>
   );
 }

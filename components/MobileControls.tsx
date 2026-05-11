@@ -7,6 +7,7 @@ export function MobileControls() {
     const sidebar = document.getElementById('sidebar');
     const mask = document.getElementById('sidebarMask');
     const burgerBtn = document.getElementById('burgerBtn');
+    const closeBtn = document.getElementById('sidebarCloseBtn');
     if (!sidebar || !mask || !burgerBtn) return;
 
     function openMenu() {
@@ -27,11 +28,13 @@ export function MobileControls() {
 
     burgerBtn.addEventListener('click', openMenu);
     mask.addEventListener('click', closeMenu);
+    closeBtn?.addEventListener('click', closeMenu);
     document.addEventListener('keydown', onKey);
 
     return () => {
       burgerBtn.removeEventListener('click', openMenu);
       mask.removeEventListener('click', closeMenu);
+      closeBtn?.removeEventListener('click', closeMenu);
       document.removeEventListener('keydown', onKey);
     };
   }, []);

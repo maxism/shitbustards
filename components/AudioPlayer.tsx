@@ -40,6 +40,9 @@ export function AudioPlayer() {
 
   useEffect(() => {
     function handleEpisodeClick(e: MouseEvent) {
+      // Clicks on the info/link area navigate to the episode page — don't intercept
+      if ((e.target as HTMLElement).closest('.ep__info')) return;
+
       const card = (e.target as HTMLElement).closest<HTMLElement>('.ep');
       if (!card?.dataset.audio) return;
 

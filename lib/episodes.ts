@@ -94,3 +94,18 @@ export function formatDate(date: Date): string {
     year: 'numeric',
   });
 }
+
+export function generateSlug(ep: Episode): string {
+  if (ep.season > 0 && ep.episodeNumber > 0) return `s${ep.season}ep${ep.episodeNumber}`;
+  if (ep.episodeNumber > 0) return String(ep.episodeNumber);
+  return ep.guid.replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 16) || 'ep';
+}
+
+export async function getEpisodeBySlug(slug: string): Promise<Episode | null> {
+  const episodes = await getEpisodes();
+  return episodes.find(ep => generateSlug(ep) === slug) ?? null;
+}
+
+export function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
