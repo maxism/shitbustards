@@ -1,9 +1,5 @@
 import { getEpisodes } from '@/lib/episodes';
-import { Sidebar } from '@/components/Sidebar';
 import { EpisodeCard } from '@/components/EpisodeCard';
-import { AudioPlayer } from '@/components/AudioPlayer';
-import { MobileControls } from '@/components/MobileControls';
-import { Footer } from '@/components/Footer';
 
 export const revalidate = 3600;
 
@@ -29,38 +25,12 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      {/* ─── Mobile header ─────────────────────────────── */}
-      <header className="mob-header">
-        <div className="mob-header__bg" />
-        <div className="mob-header__tint" />
-        <div className="mob-header__row">
-          <button className="mob-burger" id="burgerBtn" aria-label="Открыть меню">
-            <span /><span /><span />
-          </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="mob-header__logo" src="/logo.svg" alt="ШИТБАСТАРДС" />
-        </div>
-      </header>
-
-      {/* ─── Sidebar overlay ───────────────────────────── */}
-      <div className="sidebar-mask" id="sidebarMask" />
-
-      {/* ─── Sidebar ─────────────────────────────────── */}
-      <Sidebar />
-
-      {/* ─── Main ────────────────────────────────────── */}
-      <main className="main">
-        <div className="episodes">
-          {episodes.map(ep => (
-            <EpisodeCard key={ep.guid} episode={ep} />
-          ))}
-        </div>
-      </main>
-
-      <Footer />
-      <AudioPlayer />
-      <MobileControls />
+      <h1 className="sr-only">ШИТБАСТАРДС — подкаст про жизнь, технологии и музыку</h1>
+      <div className="episodes">
+        {episodes.map(ep => (
+          <EpisodeCard key={ep.guid} episode={ep} />
+        ))}
+      </div>
     </>
   );
 }

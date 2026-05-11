@@ -31,7 +31,7 @@ No test runner is configured.
 
 **Fonts:**
 - Inter Tight — loaded via `next/font/google` in `layout.tsx`
-- Druk Cond Cy — commercial font (Commercial Type), must be placed manually at `public/fonts/DrukCondCy-Super.woff2` and `.woff`. Referenced in `@font-face` in `globals.css`.
+- Episode titles use Impact (system font) as a bold condensed display face.
 
 **Path alias:** `@/*` maps to the repo root (e.g. `@/lib/episodes`, `@/components/Sidebar`).
 

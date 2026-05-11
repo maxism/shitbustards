@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Inter_Tight } from 'next/font/google';
+import { Sidebar } from '@/components/Sidebar';
+import { Footer } from '@/components/Footer';
+import { AudioPlayer } from '@/components/AudioPlayer';
+import { MobileControls } from '@/components/MobileControls';
 import './globals.css';
 
 const interTight = Inter_Tight({
@@ -47,12 +52,84 @@ export const metadata: Metadata = {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
     apple: OG_IMAGE,
   },
+  other: {
+    'theme-color': '#f97316',
+  },
+};
+
+const webSiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ШИТБАСТАРДС',
+  url: BASE_URL,
+  description:
+    'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.',
+  inLanguage: 'ru',
+  publisher: {
+    '@type': 'Organization',
+    name: 'ШИТБАСТАРДС',
+    url: BASE_URL,
+    logo: { '@type': 'ImageObject', url: OG_IMAGE },
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
-      <body className={interTight.variable}>{children}</body>
+      <head>
+        <link rel="preconnect" href="https://cdn.mave.digital" />
+        <link rel="dns-prefetch" href="https://cdn.mave.digital" />
+      </head>
+      <body className={interTight.variable}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+        />
+        <header className="mob-header">
+          <div className="mob-header__bg" />
+          <div className="mob-header__tint" />
+          <div className="mob-header__row">
+            <button className="mob-burger" id="burgerBtn" aria-label="Открыть меню">
+              <span /><span /><span />
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="mob-header__logo" src="/logo-text.svg" alt="ШИТБАСТАРДС" />
+          </div>
+        </header>
+
+        <div className="sidebar-mask" id="sidebarMask" />
+        <Sidebar />
+
+        <main className="main">{children}</main>
+
+        <Footer />
+        <AudioPlayer />
+        <MobileControls />
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-D09PMFB542"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D09PMFB542');`}
+        </Script>
+
+        <Script id="yandex-metrika" strategy="afterInteractive">
+          {`(function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+          })(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=109150587','ym');
+          ym(109150587,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});`}
+        </Script>
+        <noscript>
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://mc.yandex.ru/watch/109150587" style={{position:'absolute',left:'-9999px'}} alt="" />
+          </div>
+        </noscript>
+      </body>
     </html>
   );
 }

@@ -29,12 +29,11 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
             <rect x="29" y="16" width="6" height="20" rx="1" fill="#000" />
           </svg>
         </div>
-{episode.durationSec > 0 && (
+        {episode.durationSec > 0 && (
           <div className="ep__dur">{formatDuration(episode.durationSec)}</div>
         )}
       </div>
 
-      {/* Info area — navigates to episode page; AudioPlayer ignores clicks here */}
       <Link href={`/episodes/${generateSlug(episode)}`} className="ep__info">
         {episode.episodeNumber > 0 && (
           <span className="ep__num">Эп. {episode.episodeNumber}</span>
