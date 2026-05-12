@@ -35,14 +35,14 @@ export const metadata: Metadata = {
     siteName: 'ШИТБАСТАРДС',
     locale: 'ru_RU',
     type: 'website',
-    images: [{ url: OG_IMAGE, width: 600, height: 600, alt: 'ШИТБАСТАРДС' }],
+    // og:image берётся из app/opengraph-image.tsx (1200×630)
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ШИТБАСТАРДС — подкаст',
     description:
       'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.',
-    images: [OG_IMAGE],
+    // twitter:image берётся из app/opengraph-image.tsx
   },
   alternates: {
     canonical: '/',
