@@ -38,29 +38,38 @@ export function AudioPlayer() {
     if (audioRef.current) audioRef.current.playbackRate = speed;
   }, [speed]);
 
-  useEffect(() => {
-    function handleEpisodeClick(e: MouseEvent) {
-      // Clicks on the info/link area navigate to the episode page — don't intercept
-      if ((e.target as HTMLElement).closest('.ep__info')) return;
+  const currentGuidRef = useRef<string | null>(null);
 
-      const card = (e.target as HTMLElement).closest<HTMLElement>('.ep');
-      if (!card?.dataset.audio) return;
+  useEffect(() => {
+    function handlePlay(e: Event) {
+      const { guid, audioUrl, title: episodeTitle, durationSec, imageUrl: image } =
+        (e as CustomEvent).detail as {
+          guid: string;
+          audioUrl: string;
+          title: string;
+          durationSec: number;
+          imageUrl: string;
+        };
 
       const audio = audioRef.current!;
-      const audioUrl = card.dataset.audio!;
-      const episodeTitle = card.dataset.title ?? '';
-      const dur = parseInt(card.dataset.dur ?? '0', 10);
-      const image = card.dataset.image ?? '';
 
-      if (currentCardRef.current === card) {
+      if (currentGuidRef.current === guid) {
         if (audio.paused) audio.play();
         else audio.pause();
         return;
       }
 
-      currentCardRef.current?.classList.remove('is-playing');
-      currentCardRef.current = card;
-      card.classList.add('is-playing');
+      // Remove playing state from old card
+      if (currentGuidRef.current) {
+        document
+          .querySelector<HTMLElement>(`[data-guid="${currentGuidRef.current}"]`)
+          ?.classList.remove('is-playing');
+      }
+
+      currentGuidRef.current = guid;
+      currentCardRef.current =
+        document.querySelector<HTMLElement>(`[data-guid="${guid}"]`);
+      currentCardRef.current?.classList.add('is-playing');
 
       audio.src = audioUrl;
       audio.playbackRate = speed;
@@ -69,15 +78,15 @@ export function AudioPlayer() {
 
       setTitle(episodeTitle);
       setImageUrl(image);
-      setTime(`0:00 / ${fmtTime(dur)}`);
+      setTime(`0:00 / ${fmtTime(durationSec)}`);
       updateSeekStyle(0);
       if (seekRef.current) seekRef.current.value = '0';
       setVisible(true);
       setPlaying(true);
     }
 
-    document.addEventListener('click', handleEpisodeClick);
-    return () => document.removeEventListener('click', handleEpisodeClick);
+    window.addEventListener('sb:play', handlePlay);
+    return () => window.removeEventListener('sb:play', handlePlay);
   }, [updateSeekStyle, speed]);
 
   useEffect(() => {
@@ -150,6 +159,7 @@ export function AudioPlayer() {
     audio.src = '';
     currentCardRef.current?.classList.remove('is-playing');
     currentCardRef.current = null;
+    currentGuidRef.current = null;
     setVisible(false);
     setPlaying(false);
   }

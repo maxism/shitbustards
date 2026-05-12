@@ -19,6 +19,23 @@ const jsonLd = {
 export default async function Home() {
   const episodes = await getEpisodes();
 
+  // Group by season (season 0 = no season tag → shown without header)
+  const seasons = new Map<number, typeof episodes>();
+  for (const ep of episodes) {
+    const s = ep.season;
+    if (!seasons.has(s)) seasons.set(s, []);
+    seasons.get(s)!.push(ep);
+  }
+
+  // Sort seasons descending (newest first), season 0 last
+  const sortedSeasons = [...seasons.entries()].sort(([a], [b]) => {
+    if (a === 0) return 1;
+    if (b === 0) return -1;
+    return b - a;
+  });
+
+  const hasSingleGroup = sortedSeasons.length === 1;
+
   return (
     <>
       <script
@@ -26,11 +43,19 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <h1 className="sr-only">ШИТБАСТАРДС — подкаст про жизнь, технологии и музыку</h1>
-      <div className="episodes">
-        {episodes.map(ep => (
-          <EpisodeCard key={ep.guid} episode={ep} />
-        ))}
-      </div>
+
+      {sortedSeasons.map(([season, eps]) => (
+        <section key={season} className="season">
+          {!hasSingleGroup && season > 0 && (
+            <h2 className="season__header">Сезон {season}</h2>
+          )}
+          <div className="episodes">
+            {eps.map(ep => (
+              <EpisodeCard key={ep.guid} episode={ep} />
+            ))}
+          </div>
+        </section>
+      ))}
     </>
   );
 }
