@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { getEpisodes, generateSlug } from '@/lib/episodes';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://shitbustards.ru';
+export const dynamic = 'force-static';
 
-export const revalidate = 3600;
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://shitbustards.ru';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const episodes = await getEpisodes();
