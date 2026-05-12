@@ -460,6 +460,7 @@ body.player-open .main {
   background: rgba(0, 0, 0, 0.5);
   z-index: 99;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s;
 }
 
@@ -928,7 +929,7 @@ body.player-open .site-footer {
   .sidebar__close { display: flex; }
 
   .sidebar-mask { display: block; }
-  .sidebar-mask.is-visible { opacity: 1; }
+  .sidebar-mask.is-visible { opacity: 1; pointer-events: auto; }
 
   /* sticky header: header в потоке документа → нет прыжков на iOS */
   .mob-header {
