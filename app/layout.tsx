@@ -54,6 +54,7 @@ export const metadata: Metadata = {
   },
   other: {
     'theme-color': '#f97316',
+    'yandex-verification': 'f865b6b1f132293b',
   },
 };
 
