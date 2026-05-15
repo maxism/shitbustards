@@ -30,23 +30,44 @@ export async function generateMetadata({
 
   const description = stripHtml(ep.description).slice(0, 160);
 
+  // Ключевые слова: слова из заголовка (3+ символа) + базовые теги подкаста
+  const titleWords = ep.title
+    .toLowerCase()
+    .split(/[\s,–—-]+/)
+    .filter(w => w.length >= 3);
+  const keywords = [
+    ...new Set([
+      ...titleWords,
+      'шитбастардс',
+      'подкаст',
+      'подкаст на русском',
+      ...(ep.season > 0 ? [`сезон ${ep.season}`] : []),
+    ]),
+  ];
+
   return {
     title: ep.title,
     description,
+    keywords,
     openGraph: {
       title: `${ep.title} — ШИТБАСТАРДС`,
       description,
-      images: [{ url: ep.imageUrl, width: 600, height: 600 }],
-      type: 'music.song',
+      url: `/episodes/${slug}`,
+      siteName: 'ШИТБАСТАРДС',
+      locale: 'ru_RU',
+      type: 'website',
+      images: [{ url: ep.imageUrl, width: 600, height: 600, alt: ep.title }],
     },
     twitter: {
-      card: 'summary_large_image',
+      // square 600×600 cover → summary (не summary_large_image, иначе Twitter кропает)
+      card: 'summary',
       title: `${ep.title} — ШИТБАСТАРДС`,
       description,
-      images: [ep.imageUrl],
+      images: [{ url: ep.imageUrl, alt: ep.title }],
     },
     alternates: {
       canonical: `/episodes/${slug}`,
+      types: { 'application/rss+xml': 'https://cloud.mave.digital/54964' },
     },
   };
 }
@@ -89,6 +110,18 @@ export default async function EpisodePage({
         ? `PT${Math.floor(ep.durationSec / 60)}M${ep.durationSec % 60}S`
         : undefined,
     },
+    ...(ep.season > 0 && {
+      seasonNumber: ep.season,
+      partOfSeason: {
+        '@type': 'PodcastSeason',
+        seasonNumber: ep.season,
+        partOfSeries: {
+          '@type': 'PodcastSeries',
+          name: 'ШИТБАСТАРДС',
+          url: BASE_URL,
+        },
+      },
+    }),
     partOfSeries: {
       '@type': 'PodcastSeries',
       name: 'ШИТБАСТАРДС',

@@ -27,6 +27,21 @@ export const metadata: Metadata = {
   },
   description:
     'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд. Два ведущих, ноль сценария, без фильтров.',
+  keywords: [
+    'шитбастардс',
+    'подкаст',
+    'разговорный подкаст',
+    'подкаст на русском',
+    'подкаст про технологии',
+    'подкаст про жизнь',
+    'подкаст про музыку',
+    'нейросети',
+    'искусственный интеллект',
+    'бизнес подкаст',
+    'стартапы',
+    'подкаст без цензуры',
+    'Макс Ульянов',
+  ],
   openGraph: {
     title: 'ШИТБАСТАРДС — подкаст',
     description:
@@ -51,6 +66,17 @@ export const metadata: Metadata = {
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
     apple: OG_IMAGE,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
   },
   other: {
     'theme-color': '#f97316',
