@@ -21,6 +21,7 @@ export default function OgImage() {
       {/* Левая половина — обложка подкаста */}
       <img
         src={COVER}
+        alt=""
         width={630}
         height={630}
         style={{ objectFit: 'cover', flexShrink: 0 }}

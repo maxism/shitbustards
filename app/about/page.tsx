@@ -73,16 +73,16 @@ export default function AboutPage() {
         <h2 className="about__h2">Для AI и разработчиков</h2>
         <ul className="about__list">
           <li>
-            <a href="/llms.txt">llms.txt</a> — краткий индекс для LLM
+            <Link href="/llms.txt">llms.txt</Link> — краткий индекс для LLM
           </li>
           <li>
-            <a href="/api/episodes">JSON API</a> — каталог эпизодов
+            <Link href="/api/episodes">JSON API</Link> — каталог эпизодов
           </li>
           <li>
-            <a href="/feed.xml">feed.xml</a> — RSS на нашем домене
+            <Link href="/feed.xml">feed.xml</Link> — RSS на нашем домене
           </li>
           <li>
-            <a href="/sitemap.xml">sitemap.xml</a>
+            <Link href="/sitemap.xml">sitemap.xml</Link>
           </li>
           <li>
             Markdown эпизода: <code>/episodes/&#123;slug&#125;/md</code>

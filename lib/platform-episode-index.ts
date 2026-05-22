@@ -67,7 +67,8 @@ function parseSpotifyEpisodeLinks(html: string): Map<string, string> {
 
   if (links.size > 0) return links;
 
-  const hrefRe = /href="(https:\/\/open\.spotify\.com\/episode\/([a-zA-Z0-9]+))"/g;
+  const hrefRe =
+    /href="(https:\/\/open\.spotify\.com\/episode\/([a-zA-Z0-9]+))"/g;
   const episodeIds: string[] = [];
   for (const match of html.matchAll(hrefRe)) {
     const href = match[1];
@@ -100,7 +101,10 @@ async function buildPlatformEpisodeIndex(): Promise<
   const index = new Map<string, PlatformEpisodeLinks>();
 
   const [appleRes, spotifyRes] = await Promise.allSettled([
-    fetch(`https://podcasts.apple.com/podcast/id${APPLE_PODCAST_ID}`, FETCH_OPTS),
+    fetch(
+      `https://podcasts.apple.com/podcast/id${APPLE_PODCAST_ID}`,
+      FETCH_OPTS,
+    ),
     fetch(`https://open.spotify.com/show/${SPOTIFY_SHOW_ID}`, FETCH_OPTS),
   ]);
 
