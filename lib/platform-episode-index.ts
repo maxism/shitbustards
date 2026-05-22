@@ -96,9 +96,9 @@ function parseSpotifyEpisodeLinks(html: string): Map<string, string> {
 }
 
 async function buildPlatformEpisodeIndex(): Promise<
-  Map<string, PlatformEpisodeLinks>
+  Record<string, PlatformEpisodeLinks>
 > {
-  const index = new Map<string, PlatformEpisodeLinks>();
+  const index: Record<string, PlatformEpisodeLinks> = {};
 
   const [appleRes, spotifyRes] = await Promise.allSettled([
     fetch(
@@ -119,10 +119,10 @@ async function buildPlatformEpisodeIndex(): Promise<
       : new Map<string, string>();
 
   for (const title of new Set([...appleLinks.keys(), ...spotifyLinks.keys()])) {
-    index.set(title, {
+    index[title] = {
       ...(appleLinks.get(title) && { apple: appleLinks.get(title) }),
       ...(spotifyLinks.get(title) && { spotify: spotifyLinks.get(title) }),
-    });
+    };
   }
 
   return index;
@@ -137,7 +137,7 @@ export const getPlatformEpisodeIndex = unstable_cache(
 export async function getEpisodePlatformLinks(title: string) {
   const index = await getPlatformEpisodeIndex();
   const key = normalizeEpisodeTitle(title);
-  const episodeLinks = index.get(key) ?? {};
+  const episodeLinks = index[key] ?? {};
 
   return PLATFORMS.map((platform) => ({
     label: platform.label,
