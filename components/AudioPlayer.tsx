@@ -31,7 +31,9 @@ export function AudioPlayer() {
 
   useEffect(() => {
     document.body.classList.toggle('player-open', visible);
-    return () => { document.body.classList.remove('player-open'); };
+    return () => {
+      document.body.classList.remove('player-open');
+    };
   }, [visible]);
 
   useEffect(() => {
@@ -42,14 +44,19 @@ export function AudioPlayer() {
 
   useEffect(() => {
     function handlePlay(e: Event) {
-      const { guid, audioUrl, title: episodeTitle, durationSec, imageUrl: image } =
-        (e as CustomEvent).detail as {
-          guid: string;
-          audioUrl: string;
-          title: string;
-          durationSec: number;
-          imageUrl: string;
-        };
+      const {
+        guid,
+        audioUrl,
+        title: episodeTitle,
+        durationSec,
+        imageUrl: image,
+      } = (e as CustomEvent).detail as {
+        guid: string;
+        audioUrl: string;
+        title: string;
+        durationSec: number;
+        imageUrl: string;
+      };
 
       const audio = audioRef.current!;
 
@@ -67,8 +74,9 @@ export function AudioPlayer() {
       }
 
       currentGuidRef.current = guid;
-      currentCardRef.current =
-        document.querySelector<HTMLElement>(`[data-guid="${guid}"]`);
+      currentCardRef.current = document.querySelector<HTMLElement>(
+        `[data-guid="${guid}"]`,
+      );
       currentCardRef.current?.classList.add('is-playing');
 
       audio.src = audioUrl;
@@ -146,11 +154,14 @@ export function AudioPlayer() {
 
   function skip(delta: number) {
     const audio = audioRef.current!;
-    audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + delta));
+    audio.currentTime = Math.max(
+      0,
+      Math.min(audio.duration || 0, audio.currentTime + delta),
+    );
   }
 
   function toggleSpeed() {
-    setSpeed(s => SPEEDS[(SPEEDS.indexOf(s) + 1) % SPEEDS.length]);
+    setSpeed((s) => SPEEDS[(SPEEDS.indexOf(s) + 1) % SPEEDS.length]);
   }
 
   function close() {
@@ -167,15 +178,25 @@ export function AudioPlayer() {
   return (
     <>
       <audio ref={audioRef} preload="none" />
-      <div className={`player${visible ? ' is-visible' : ''}${playing ? ' is-playing' : ''}`}>
+      <div
+        className={`player${visible ? ' is-visible' : ''}${playing ? ' is-playing' : ''}`}
+      >
         <div className="player__inner">
-
           {imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="player__art" src={imageUrl} alt="" aria-hidden="true" />
+            <img
+              className="player__art"
+              src={imageUrl}
+              alt=""
+              aria-hidden="true"
+            />
           )}
 
-          <button className="player__playbtn" onClick={togglePlay} aria-label={playing ? 'Пауза' : 'Воспроизвести'}>
+          <button
+            className="player__playbtn"
+            onClick={togglePlay}
+            aria-label={playing ? 'Пауза' : 'Воспроизвести'}
+          >
             <svg className="icon-play" viewBox="0 0 18 18" fill="none">
               <polygon points="4,2 16,9 4,16" fill="#111" />
             </svg>
@@ -185,15 +206,36 @@ export function AudioPlayer() {
             </svg>
           </button>
 
-          <button className="player__skip" onClick={() => skip(-15)} aria-label="Назад 15 секунд">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <button
+            className="player__skip"
+            onClick={() => skip(-15)}
+            aria-label="Назад 15 секунд"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="currentColor"
+              aria-hidden="true"
+            >
               <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H5c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
             </svg>
             <span>15</span>
           </button>
 
-          <button className="player__skip" onClick={() => skip(15)} aria-label="Вперёд 15 секунд">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" style={{ transform: 'scaleX(-1)' }}>
+          <button
+            className="player__skip"
+            onClick={() => skip(15)}
+            aria-label="Вперёд 15 секунд"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="currentColor"
+              aria-hidden="true"
+              style={{ transform: 'scaleX(-1)' }}
+            >
               <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H5c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
             </svg>
             <span>15</span>
@@ -214,16 +256,23 @@ export function AudioPlayer() {
             />
           </div>
 
-          <button className="player__speed" onClick={toggleSpeed} aria-label="Скорость воспроизведения">
+          <button
+            className="player__speed"
+            onClick={toggleSpeed}
+            aria-label="Скорость воспроизведения"
+          >
             {speed}×
           </button>
 
           <span className="player__time">{time}</span>
 
-          <button className="player__close" onClick={close} aria-label="Закрыть плеер">
+          <button
+            className="player__close"
+            onClick={close}
+            aria-label="Закрыть плеер"
+          >
             ×
           </button>
-
         </div>
       </div>
     </>

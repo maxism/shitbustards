@@ -7,9 +7,7 @@ const nextConfig: NextConfig = {
   trailingSlash: isStaticExport,
   images: {
     unoptimized: isStaticExport,
-    remotePatterns: [
-      { protocol: 'https', hostname: 'cdn.mave.digital' },
-    ],
+    remotePatterns: [{ protocol: 'https', hostname: 'cdn.mave.digital' }],
   },
 };
 

@@ -1,6 +1,8 @@
 import { XMLParser } from 'fast-xml-parser';
 
-const RSS_URL = 'https://cloud.mave.digital/54964';
+import { RSS_URL } from '@/lib/site';
+
+export { RSS_URL };
 
 export type Episode = {
   guid: string;
@@ -73,9 +75,13 @@ export async function getEpisodes(): Promise<Episode[]> {
     season: Number(item['itunes:season'] ?? 0),
     episodeNumber: Number(item['itunes:episode'] ?? 0),
     imageUrl: normalizeImageUrl(
-      ((item['itunes:image'] as Record<string, unknown>)?.['@_href'] as string) ?? ''
+      ((item['itunes:image'] as Record<string, unknown>)?.[
+        '@_href'
+      ] as string) ?? '',
     ),
-    audioUrl: String((item.enclosure as Record<string, unknown>)?.['@_url'] ?? ''),
+    audioUrl: String(
+      (item.enclosure as Record<string, unknown>)?.['@_url'] ?? '',
+    ),
   }));
 }
 
@@ -83,7 +89,8 @@ export function formatDuration(sec: number): string {
   const h = Math.floor(sec / 3600);
   const m = Math.floor((sec % 3600) / 60);
   const s = sec % 60;
-  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  if (h > 0)
+    return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
@@ -96,16 +103,25 @@ export function formatDate(date: Date): string {
 }
 
 export function generateSlug(ep: Episode): string {
-  if (ep.season > 0 && ep.episodeNumber > 0) return `s${ep.season}ep${ep.episodeNumber}`;
+  if (ep.season > 0 && ep.episodeNumber > 0)
+    return `s${ep.season}ep${ep.episodeNumber}`;
   if (ep.episodeNumber > 0) return String(ep.episodeNumber);
-  return ep.guid.replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 16) || 'ep';
+  return (
+    ep.guid
+      .replace(/[^a-z0-9]/gi, '')
+      .toLowerCase()
+      .slice(0, 16) || 'ep'
+  );
 }
 
 export async function getEpisodeBySlug(slug: string): Promise<Episode | null> {
   const episodes = await getEpisodes();
-  return episodes.find(ep => generateSlug(ep) === slug) ?? null;
+  return episodes.find((ep) => generateSlug(ep) === slug) ?? null;
 }
 
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }

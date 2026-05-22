@@ -3,7 +3,10 @@
 import type { Episode } from '@/lib/episodes';
 
 interface PlayButtonProps {
-  episode: Pick<Episode, 'guid' | 'audioUrl' | 'title' | 'durationSec' | 'imageUrl'>;
+  episode: Pick<
+    Episode,
+    'guid' | 'audioUrl' | 'title' | 'durationSec' | 'imageUrl'
+  >;
 }
 
 export function PlayButton({ episode }: PlayButtonProps) {
@@ -19,7 +22,7 @@ export function PlayButton({ episode }: PlayButtonProps) {
           durationSec: episode.durationSec,
           imageUrl: episode.imageUrl,
         },
-      })
+      }),
     );
   }
 

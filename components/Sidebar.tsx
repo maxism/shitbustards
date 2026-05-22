@@ -1,16 +1,31 @@
+import Link from 'next/link';
 import { PLATFORMS } from '@/lib/platforms';
 
 export function Sidebar() {
   return (
     <aside className="sidebar" id="sidebar">
       <div className="sidebar__bg" />
-      <button className="sidebar__close" id="sidebarCloseBtn" aria-label="Закрыть меню">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M3 3L17 17M17 3L3 17" stroke="#fef2e2" strokeWidth="2" strokeLinecap="round"/>
+      <button
+        className="sidebar__close"
+        id="sidebarCloseBtn"
+        aria-label="Закрыть меню"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M3 3L17 17M17 3L3 17"
+            stroke="#fef2e2"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
         </svg>
       </button>
       <div className="sidebar__inner">
-
         {/* Замени на свой файл: public/fonts/bird.svg */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -21,20 +36,19 @@ export function Sidebar() {
         />
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="sidebar__logo"
-          src="/logo.svg"
-          alt="ШИТБАСТАРДС"
-        />
+        <img className="sidebar__logo" src="/logo.svg" alt="ШИТБАСТАРДС" />
 
         <div className="sidebar__divider" />
 
         <p className="sidebar__desc">
-          Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.
-          Два ведущих, ноль сценария, без фильтров.
+          Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё
+          подряд. Два ведущих, ноль сценария, без фильтров.
         </p>
 
-        <ul className="sidebar__platforms" aria-label="Слушать на платформах">
+        <ul className="sidebar__platforms" aria-label="Навигация и платформы">
+          <li>
+            <Link href="/about">О подкасте</Link>
+          </li>
           {PLATFORMS.map(({ label, href }) => (
             <li key={label}>
               <a href={href} target="_blank" rel="noopener noreferrer">
@@ -45,7 +59,6 @@ export function Sidebar() {
         </ul>
 
         <div className="sidebar__bottom">
-          <p className="sidebar__sub-label">Подпишись на канал:</p>
           <a
             className="sidebar__tg"
             href="https://t.me/shitbustards"
@@ -61,7 +74,6 @@ export function Sidebar() {
             <span>Telegram</span>
           </a>
         </div>
-
       </div>
     </aside>
   );

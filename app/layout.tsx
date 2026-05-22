@@ -5,6 +5,12 @@ import { Sidebar } from '@/components/Sidebar';
 import { Footer } from '@/components/Footer';
 import { AudioPlayer } from '@/components/AudioPlayer';
 import { MobileControls } from '@/components/MobileControls';
+import {
+  PODCAST_COVER,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from '@/lib/site';
 import './globals.css';
 
 const interTight = Inter_Tight({
@@ -14,19 +20,13 @@ const interTight = Inter_Tight({
   variable: '--font-inter-tight',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://shitbustards.ru';
-
-const OG_IMAGE =
-  'https://cdn.mave.digital/storage/podcasts/6dad6969-58b3-471d-a5ec-acfd78f36b52/images/dc158682-183d-443a-a41b-234d02225150_600.png';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'ШИТБАСТАРДС — подкаст',
-    template: '%s — ШИТБАСТАРДС',
+    default: `${SITE_NAME} — подкаст`,
+    template: `%s — ${SITE_NAME}`,
   },
-  description:
-    'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд. Два ведущих, ноль сценария, без фильтров.',
+  description: SITE_DESCRIPTION,
   keywords: [
     'шитбастардс',
     'подкаст',
@@ -41,31 +41,28 @@ export const metadata: Metadata = {
     'стартапы',
     'подкаст без цензуры',
     'Макс Ульянов',
+    'Майк Жарчев',
   ],
   openGraph: {
-    title: 'ШИТБАСТАРДС — подкаст',
-    description:
-      'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд. Два ведущих, ноль сценария, без фильтров.',
-    url: BASE_URL,
-    siteName: 'ШИТБАСТАРДС',
+    title: `${SITE_NAME} — подкаст`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_NAME,
     locale: 'ru_RU',
     type: 'website',
-    // og:image берётся из app/opengraph-image.tsx (1200×630)
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ШИТБАСТАРДС — подкаст',
-    description:
-      'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.',
-    // twitter:image берётся из app/opengraph-image.tsx
+    title: `${SITE_NAME} — подкаст`,
+    description: SITE_DESCRIPTION,
   },
   alternates: {
     canonical: '/',
-    types: { 'application/rss+xml': 'https://cloud.mave.digital/54964' },
+    types: { 'application/rss+xml': `${SITE_URL}/feed.xml` },
   },
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
-    apple: OG_IMAGE,
+    apple: PODCAST_COVER,
   },
   robots: {
     index: true,
@@ -87,25 +84,40 @@ export const metadata: Metadata = {
 const webSiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'ШИТБАСТАРДС',
-  url: BASE_URL,
-  description:
-    'Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё подряд.',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
   inLanguage: 'ru',
   publisher: {
     '@type': 'Organization',
-    name: 'ШИТБАСТАРДС',
-    url: BASE_URL,
-    logo: { '@type': 'ImageObject', url: OG_IMAGE },
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: { '@type': 'ImageObject', url: PODCAST_COVER },
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ru">
       <head>
         <link rel="preconnect" href="https://cdn.mave.digital" />
         <link rel="dns-prefetch" href="https://cdn.mave.digital" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          href={`${SITE_URL}/feed.xml`}
+          title={`${SITE_NAME} RSS`}
+        />
+        <link
+          rel="alternate"
+          type="text/plain"
+          href={`${SITE_URL}/llms.txt`}
+          title={`${SITE_NAME} llms.txt`}
+        />
       </head>
       <body className={interTight.variable}>
         <script
@@ -116,11 +128,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="mob-header__bg" />
           <div className="mob-header__tint" />
           <div className="mob-header__row">
-            <button className="mob-burger" id="burgerBtn" aria-label="Открыть меню">
-              <span /><span /><span />
+            <button
+              className="mob-burger"
+              id="burgerBtn"
+              aria-label="Открыть меню"
+            >
+              <span />
+              <span />
+              <span />
             </button>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="mob-header__logo" src="/logo-text.svg" alt="ШИТБАСТАРДС" />
+            <img
+              className="mob-header__logo"
+              src="/logo-text.svg"
+              alt={SITE_NAME}
+            />
           </div>
         </header>
 
@@ -153,7 +175,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <noscript>
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://mc.yandex.ru/watch/109150587" style={{position:'absolute',left:'-9999px'}} alt="" />
+            <img
+              src="https://mc.yandex.ru/watch/109150587"
+              style={{ position: 'absolute', left: '-9999px' }}
+              alt=""
+            />
           </div>
         </noscript>
       </body>

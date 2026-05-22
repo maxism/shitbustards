@@ -1,0 +1,13 @@
+/* TEAM */
+Podcast: ШИТБАСТАРДС
+Site: https://shitbustards.ru
+Contact: info@shitbustards.ru
+Telegram: https://t.me/shitbustards
+
+/* THANKS */
+Mave.digital — хостинг RSS и аудио
+
+/* SITE */
+Last update: 2026
+Standards: HTML5, Schema.org, RSS, llms.txt
+Languages: Russian
