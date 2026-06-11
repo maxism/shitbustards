@@ -1,4 +1,4 @@
-import { YOUTUBE_URL } from '@/lib/site';
+import { TELEGRAM_URL, YOUTUBE_URL } from '@/lib/site';
 
 export const APPLE_PODCAST_ID = '1753575420';
 export const SPOTIFY_SHOW_ID = '1Yvaa7UTq6wM2yNYjxYcTr';
@@ -47,5 +47,18 @@ export const PLATFORMS = [
   { id: 'rss', label: 'RSS', href: '/feed.xml' },
 ] as const;
 
+/** Платформы для прослушивания (без RSS). */
+export const LISTEN_PLATFORMS = PLATFORMS.filter((p) => p.id !== 'rss');
+
+export const TELEGRAM_PLATFORM = {
+  id: 'telegram',
+  label: 'Telegram',
+  href: TELEGRAM_URL,
+} as const;
+
+/** Сайдбар: платформы + Telegram. */
+export const SIDEBAR_PLATFORMS = [...LISTEN_PLATFORMS, TELEGRAM_PLATFORM];
+
 export type Platform = (typeof PLATFORMS)[number];
 export type PlatformId = Platform['id'];
+export type SidebarPlatform = (typeof SIDEBAR_PLATFORMS)[number];

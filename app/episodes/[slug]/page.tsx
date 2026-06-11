@@ -14,6 +14,7 @@ import {
   buildEpisodeJsonLd,
   getMetaDescription,
 } from '@/lib/episode-public';
+import { PlatformChip } from '@/components/PlatformChip';
 import { getEpisodePlatformLinks } from '@/lib/platform-episode-index';
 import { sanitizeEpisodeHtml } from '@/lib/sanitize-html';
 import { readTranscript, getTranscriptUrl } from '@/lib/transcripts';
@@ -146,17 +147,13 @@ export default async function EpisodePage({
         </div>
       </div>
 
-      <section className="about__section episode-listen">
+      <section className="about__card episode-listen">
         <h2 className="about__h2">Слушать</h2>
-        <ul className="about__platforms">
-          {platformLinks.map(({ label, href }) => (
-            <li key={label}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
-            </li>
+        <div className="about__platforms">
+          {platformLinks.map((platform) => (
+            <PlatformChip key={platform.label} platform={platform} />
           ))}
-        </ul>
+        </div>
       </section>
 
       {safeDescription && (

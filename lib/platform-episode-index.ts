@@ -140,6 +140,7 @@ export async function getEpisodePlatformLinks(title: string) {
   const episodeLinks = index[key] ?? {};
 
   return PLATFORMS.map((platform) => ({
+    id: platform.id,
     label: platform.label,
     href: episodeLinks[platform.id] ?? platform.href,
   }));

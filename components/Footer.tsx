@@ -1,37 +1,40 @@
 import Link from 'next/link';
-import { PLATFORMS } from '@/lib/platforms';
-import { TELEGRAM_URL } from '@/lib/site';
+import { SITE_DESCRIPTION, TELEGRAM_URL } from '@/lib/site';
 
 export function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
-        <ul
-          className="site-footer__platforms"
-          aria-label="Слушать на платформах"
-        >
-          {PLATFORMS.map(({ label, href }) => (
-            <li key={label}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="site-footer__brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="site-footer__bird"
+            src="/fonts/bird.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="site-footer__logo"
+            src="/logo.svg"
+            alt="ШИТБАСТАРДС"
+          />
+          <p className="site-footer__tagline">{SITE_DESCRIPTION}</p>
+        </div>
 
-        <div className="site-footer__bottom">
-          <Link href="/about" className="site-footer__about">
+        <div className="site-footer__links">
+          <Link href="/about" className="site-footer__link">
             О подкасте
           </Link>
           <a
-            className="site-footer__tg"
+            className="site-footer__link"
             href={TELEGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
             Telegram
           </a>
-          <a className="site-footer__email" href="mailto:info@shitbustards.ru">
+          <a className="site-footer__link" href="mailto:info@shitbustards.ru">
             info@shitbustards.ru
           </a>
           <span className="site-footer__copyright">

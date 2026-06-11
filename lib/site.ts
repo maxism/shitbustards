@@ -24,6 +24,15 @@ export const EXCERPT_LENGTH = 180;
 export const META_DESCRIPTION_LENGTH = 160;
 
 export const HOSTS = [
-  { name: 'Макс Ульянов', role: 'Ведущий', url: 'https://mxsm.me' },
-  { name: 'Майк Жарчев', role: 'Ведущий' },
+  {
+    name: 'Макс Ульянов',
+    role: 'Ведущий',
+    url: 'https://mxsm.me',
+    avatar: '/hosts/max.png',
+  },
+  {
+    name: 'Майк Жарчев',
+    role: 'Ведущий',
+    avatar: '/hosts/mike.png',
+  },
 ] as const;

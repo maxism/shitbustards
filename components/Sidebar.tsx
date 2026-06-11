@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { PLATFORMS } from '@/lib/platforms';
+import { SIDEBAR_PLATFORMS } from '@/lib/platforms';
+import { SidebarLink } from '@/components/SidebarLink';
 
 export function Sidebar() {
   return (
@@ -26,7 +26,6 @@ export function Sidebar() {
         </svg>
       </button>
       <div className="sidebar__inner">
-        {/* Замени на свой файл: public/fonts/bird.svg */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="sidebar__bird"
@@ -40,35 +39,39 @@ export function Sidebar() {
 
         <div className="sidebar__divider" />
 
-        <ul className="sidebar__platforms" aria-label="Навигация и платформы">
-          <li>
-            <Link href="/about">О подкасте</Link>
-          </li>
-          {PLATFORMS.map(({ label, href }) => (
-            <li key={label}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
+        <nav className="sidebar__block" aria-label="Разделы сайта">
+          <p className="sidebar__block-title">Сайт</p>
+          <ul className="sidebar__menu">
+            <li>
+              <SidebarLink href="/">Все эпизоды</SidebarLink>
             </li>
-          ))}
-        </ul>
+            <li>
+              <SidebarLink href="/about">О подкасте</SidebarLink>
+            </li>
+            <li>
+              <a href="/feed.xml">RSS</a>
+            </li>
+          </ul>
+        </nav>
 
-        <div className="sidebar__bottom">
-          <a
-            className="sidebar__tg"
-            href="https://t.me/shitbustards"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8-1.68 7.93c-.12.58-.46.72-.94.45l-2.62-1.93-1.26 1.22c-.14.14-.26.26-.53.26l.19-2.67 4.85-4.38c.21-.19-.05-.29-.32-.1l-6 3.77-2.58-.8c-.56-.18-.57-.56.12-.83l10.08-3.88c.46-.17.87.11.69.96z"
-                fill="#fef2e2"
-              />
-            </svg>
-            <span>Telegram</span>
-          </a>
-        </div>
+        <nav className="sidebar__block" aria-label="Слушать на платформах">
+          <p className="sidebar__block-title">Слушать</p>
+          <ul className="sidebar__menu">
+            {SIDEBAR_PLATFORMS.map(({ label, href }) => (
+              <li key={label}>
+                <a
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={
+                    href.startsWith('http') ? 'noopener noreferrer' : undefined
+                  }
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </aside>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { PLATFORMS } from '@/lib/platforms';
+import { PLATFORMS, SIDEBAR_PLATFORMS } from '@/lib/platforms';
+import { PlatformChip } from '@/components/PlatformChip';
 import {
   CONTACT_EMAIL,
   HOSTS,
@@ -47,42 +48,46 @@ export default function AboutPage() {
 
       <p className="about__desc">{SITE_DESCRIPTION}</p>
 
-      <section className="about__section">
+      <section className="about__card">
         <h2 className="about__h2">Ведущие</h2>
-        <ul className="about__list">
-          {HOSTS.map(({ name, role, url }) => (
-            <li key={name}>
-              <strong>
-                {url ? (
-                  <a href={url} target="_blank" rel="noopener noreferrer">
-                    {name}
-                  </a>
-                ) : (
-                  name
-                )}
-              </strong>{' '}
-              — {role}
+        <ul className="about__hosts">
+          {HOSTS.map(({ name, role, url, avatar }) => (
+            <li key={name} className="about__host">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="about__avatar" src={avatar} alt="" />
+              <div className="about__host-info">
+                <strong className="about__host-name">
+                  {url ? (
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                      {name}
+                    </a>
+                  ) : (
+                    name
+                  )}
+                </strong>
+                <span className="about__host-role">{role}</span>
+              </div>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="about__section">
+      <section className="about__card">
         <h2 className="about__h2">Слушать</h2>
-        <ul className="about__platforms">
-          {PLATFORMS.map(({ label, href }) => (
-            <li key={label}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
-            </li>
+        <div className="about__platforms">
+          {SIDEBAR_PLATFORMS.map((platform) => (
+            <PlatformChip key={platform.id} platform={platform} />
           ))}
-        </ul>
+          <PlatformChip
+            platform={PLATFORMS.find((p) => p.id === 'rss')!}
+            external={false}
+          />
+        </div>
       </section>
 
-      <section className="about__section">
+      <section className="about__card">
         <h2 className="about__h2">Контакты</h2>
-        <p>
+        <p className="about__contacts">
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
           {' · '}
           <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer">
@@ -91,8 +96,8 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <section className="about__section">
-        <h2 className="about__h2">Для AI и разработчиков</h2>
+      <details className="about__dev">
+        <summary className="about__dev-toggle">Для AI и разработчиков</summary>
         <ul className="about__list">
           <li>
             <Link href="/llms.txt">llms.txt</Link> — краткий индекс для LLM
@@ -110,7 +115,7 @@ export default function AboutPage() {
             Markdown эпизода: <code>/episodes/&#123;slug&#125;/md</code>
           </li>
         </ul>
-      </section>
+      </details>
     </article>
   );
 }
