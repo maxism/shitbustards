@@ -72,7 +72,12 @@ function baseSlug(ep: RawEpisode): string {
 }
 
 function guidSuffix(guid: string): string {
-  return guid.replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8) || 'ep';
+  return (
+    guid
+      .replace(/[^a-z0-9]/gi, '')
+      .toLowerCase()
+      .slice(0, 8) || 'ep'
+  );
 }
 
 function assignSlugs(episodes: RawEpisode[]): Episode[] {

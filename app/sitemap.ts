@@ -8,9 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const episodes = await getEpisodes();
   const latestEpisodeDate =
     episodes.length > 0
-      ? new Date(
-          Math.max(...episodes.map((ep) => ep.publishDate.getTime())),
-        )
+      ? new Date(Math.max(...episodes.map((ep) => ep.publishDate.getTime())))
       : new Date();
 
   return [

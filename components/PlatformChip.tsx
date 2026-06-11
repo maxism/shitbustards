@@ -1,10 +1,8 @@
-import type { Platform } from '@/lib/platforms';
-
 export function PlatformChip({
   platform,
   external = true,
 }: {
-  platform: Pick<Platform, 'label' | 'href'>;
+  platform: { label: string; href: string };
   external?: boolean;
 }) {
   const isExternal = external && platform.href.startsWith('http');

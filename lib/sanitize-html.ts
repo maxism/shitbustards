@@ -38,7 +38,9 @@ export function sanitizeEpisodeHtml(html: string): string {
       const hrefMatch = match.match(
         /href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i,
       );
-      const href = safeHref(hrefMatch?.[1] ?? hrefMatch?.[2] ?? hrefMatch?.[3] ?? '');
+      const href = safeHref(
+        hrefMatch?.[1] ?? hrefMatch?.[2] ?? hrefMatch?.[3] ?? '',
+      );
       if (!href) return '';
       const escaped = href
         .replace(/&/g, '&amp;')

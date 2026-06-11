@@ -36,10 +36,7 @@ export function FeaturedEpisode({ episode }: { episode: Episode }) {
             </time>
           )}
         </div>
-        <Link
-          href={`/episodes/${episode.slug}`}
-          className="featured__more"
-        >
+        <Link href={`/episodes/${episode.slug}`} className="featured__more">
           Подробнее →
         </Link>
       </div>

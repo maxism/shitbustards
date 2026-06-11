@@ -56,7 +56,9 @@ export default async function Home() {
             height={120}
           />
           <div className="home-intro__text">
-            <p className="home-intro__tagline">Некультурно-разговорный подкаст</p>
+            <p className="home-intro__tagline">
+              Некультурно-разговорный подкаст
+            </p>
             <h1 className="home-intro__title">{SITE_NAME}</h1>
             <p className="home-intro__desc">{SITE_DESCRIPTION}</p>
           </div>

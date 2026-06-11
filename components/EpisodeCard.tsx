@@ -14,9 +14,7 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={episode.imageUrl} alt={episode.title} loading="lazy" />
         <PlayButton episode={episode} />
-        {isEpisodeNew(episode) && (
-          <span className="ep__badge">Новый</span>
-        )}
+        {isEpisodeNew(episode) && <span className="ep__badge">Новый</span>}
         {episode.durationSec > 0 && (
           <div className="ep__dur">{formatDuration(episode.durationSec)}</div>
         )}

@@ -128,7 +128,9 @@ export default async function EpisodePage({
             {ep.episodeNumber > 0 && `Эп. ${ep.episodeNumber} · `}
             {ep.season > 0 && `Сезон ${ep.season} · `}
             {formatDate(ep.publishDate) && (
-              <time dateTime={publishDateIso}>{formatDate(ep.publishDate)}</time>
+              <time dateTime={publishDateIso}>
+                {formatDate(ep.publishDate)}
+              </time>
             )}
             {ep.durationSec > 0 && ` · ${formatDuration(ep.durationSec)}`}
           </p>

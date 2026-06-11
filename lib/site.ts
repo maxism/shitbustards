@@ -23,7 +23,14 @@ export const EXCERPT_LENGTH = 180;
 
 export const META_DESCRIPTION_LENGTH = 160;
 
-export const HOSTS = [
+export type Host = {
+  readonly name: string;
+  readonly role: string;
+  readonly avatar: string;
+  readonly url?: string;
+};
+
+export const HOSTS: readonly Host[] = [
   {
     name: 'Макс Ульянов',
     role: 'Ведущий',
@@ -35,4 +42,4 @@ export const HOSTS = [
     role: 'Ведущий',
     avatar: '/hosts/mike.png',
   },
-] as const;
+];

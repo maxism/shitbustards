@@ -11,8 +11,7 @@ export function SidebarLink({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isActive =
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isActive = href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
     <Link
