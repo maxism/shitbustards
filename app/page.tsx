@@ -4,6 +4,7 @@ import {
   buildItemListJsonLd,
   buildPodcastSeriesJsonLd,
 } from '@/lib/episode-public';
+import { SITE_DESCRIPTION } from '@/lib/site';
 
 export const revalidate = 3600;
 
@@ -37,9 +38,10 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
-      <h1 className="sr-only">
-        ШИТБАСТАРДС — подкаст про жизнь, технологии и музыку
-      </h1>
+      <header className="home-intro">
+        <h1 className="home-intro__title">ШИТБАСТАРДС</h1>
+        <p className="home-intro__desc">{SITE_DESCRIPTION}</p>
+      </header>
 
       {sortedSeasons.map(([season, eps]) => (
         <section key={season} className="season">

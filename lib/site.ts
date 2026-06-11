@@ -17,11 +17,13 @@ export const CONTACT_EMAIL = 'info@shitbustards.ru';
 
 export const TELEGRAM_URL = 'https://t.me/shitbustards';
 
+export const YOUTUBE_URL = 'https://www.youtube.com/@shitbustards';
+
 export const EXCERPT_LENGTH = 180;
 
 export const META_DESCRIPTION_LENGTH = 160;
 
 export const HOSTS = [
-  { name: 'Макс Ульянов', role: 'Ведущий' },
+  { name: 'Макс Ульянов', role: 'Ведущий', url: 'https://mxsm.me' },
   { name: 'Майк Жарчев', role: 'Ведущий' },
 ] as const;

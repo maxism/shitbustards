@@ -40,11 +40,6 @@ export function Sidebar() {
 
         <div className="sidebar__divider" />
 
-        <p className="sidebar__desc">
-          Некультурно-разговорный подкаст про жизнь, технологии, музыку и всё
-          подряд. Два ведущих, ноль сценария, без фильтров.
-        </p>
-
         <ul className="sidebar__platforms" aria-label="Навигация и платформы">
           <li>
             <Link href="/about">О подкасте</Link>

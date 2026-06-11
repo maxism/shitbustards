@@ -69,13 +69,15 @@ export function AudioPlayer() {
       // Remove playing state from old card
       if (currentGuidRef.current) {
         document
-          .querySelector<HTMLElement>(`[data-guid="${currentGuidRef.current}"]`)
+          .querySelector<HTMLElement>(
+            `[data-guid="${CSS.escape(currentGuidRef.current)}"]`,
+          )
           ?.classList.remove('is-playing');
       }
 
       currentGuidRef.current = guid;
       currentCardRef.current = document.querySelector<HTMLElement>(
-        `[data-guid="${guid}"]`,
+        `[data-guid="${CSS.escape(guid)}"]`,
       );
       currentCardRef.current?.classList.add('is-playing');
 
@@ -139,7 +141,7 @@ export function AudioPlayer() {
 
   function togglePlay() {
     const audio = audioRef.current!;
-    if (audio.paused) audio.play();
+    if (audio.paused) void audio.play().catch(() => {});
     else audio.pause();
   }
 

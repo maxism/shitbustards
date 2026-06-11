@@ -13,6 +13,19 @@ import {
 export const metadata: Metadata = {
   title: 'О подкасте',
   description: SITE_DESCRIPTION,
+  openGraph: {
+    title: `О подкасте — ${SITE_NAME}`,
+    description: SITE_DESCRIPTION,
+    url: '/about',
+    type: 'website',
+    images: [{ url: PODCAST_COVER, width: 600, height: 600, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `О подкасте — ${SITE_NAME}`,
+    description: SITE_DESCRIPTION,
+    images: [{ url: PODCAST_COVER, alt: SITE_NAME }],
+  },
   alternates: { canonical: '/about' },
 };
 
@@ -37,9 +50,18 @@ export default function AboutPage() {
       <section className="about__section">
         <h2 className="about__h2">Ведущие</h2>
         <ul className="about__list">
-          {HOSTS.map(({ name, role }) => (
+          {HOSTS.map(({ name, role, url }) => (
             <li key={name}>
-              <strong>{name}</strong> — {role}
+              <strong>
+                {url ? (
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    {name}
+                  </a>
+                ) : (
+                  name
+                )}
+              </strong>{' '}
+              — {role}
             </li>
           ))}
         </ul>

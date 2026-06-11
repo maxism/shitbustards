@@ -2,7 +2,7 @@ import type { Episode } from '@/lib/episodes';
 import {
   formatDate,
   formatDuration,
-  generateSlug,
+  safeToISOString,
   stripHtml,
 } from '@/lib/episodes';
 import {
@@ -53,22 +53,21 @@ export function episodeToPublic(
   hasTranscript = false,
   transcriptUrl: string | null = null,
 ): PublicEpisode {
-  const slug = generateSlug(ep);
   return {
-    slug,
+    slug: ep.slug,
     guid: ep.guid,
     title: ep.title,
     description: stripHtml(ep.description),
     excerpt: getExcerpt(ep),
-    publishDate: ep.publishDate.toISOString(),
+    publishDate: safeToISOString(ep.publishDate) ?? '',
     durationSec: ep.durationSec,
     durationFormatted: ep.durationSec > 0 ? formatDuration(ep.durationSec) : '',
     season: ep.season,
     episodeNumber: ep.episodeNumber,
     imageUrl: ep.imageUrl,
     audioUrl: ep.audioUrl,
-    url: `${SITE_URL}/episodes/${slug}`,
-    markdownUrl: `${SITE_URL}/episodes/${slug}/md`,
+    url: `${SITE_URL}/episodes/${ep.slug}`,
+    markdownUrl: `${SITE_URL}/episodes/${ep.slug}/md`,
     transcriptUrl,
     hasTranscript,
   };
@@ -76,7 +75,11 @@ export function episodeToPublic(
 
 export function durationIso(sec: number): string | undefined {
   if (!sec) return undefined;
-  return `PT${Math.floor(sec / 60)}M${sec % 60}S`;
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (h > 0) return `PT${h}H${m}M${s}S`;
+  return `PT${m}M${s}S`;
 }
 
 export function buildPodcastSeriesJsonLd() {
@@ -104,7 +107,7 @@ export function buildItemListJsonLd(episodes: Episode[]) {
     name: `Эпизоды подкаста ${SITE_NAME}`,
     numberOfItems: episodes.length,
     itemListElement: episodes.map((ep, i) => {
-      const slug = generateSlug(ep);
+      const slug = ep.slug;
       return {
         '@type': 'ListItem',
         position: i + 1,
@@ -132,7 +135,7 @@ export function buildEpisodeJsonLd(
     name: ep.title,
     url: episodeUrl,
     episodeNumber: ep.episodeNumber || undefined,
-    datePublished: ep.publishDate.toISOString().split('T')[0],
+    datePublished: safeToISOString(ep.publishDate)?.split('T')[0],
     description: plainDescription,
     image: ep.imageUrl,
     timeRequired: isoDuration,
@@ -217,9 +220,11 @@ export function episodeToMarkdown(
 }
 
 export function buildLlmsTxt(episodes: Episode[]): string {
-  const latest = episodes.slice(0, 30);
+  const latest = [...episodes]
+    .sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime())
+    .slice(0, 30);
   const episodeLines = latest.map((ep) => {
-    const slug = generateSlug(ep);
+    const slug = ep.slug;
     const excerpt = getExcerpt(ep, 100);
     return `- [${ep.title}](${SITE_URL}/episodes/${slug}): ${excerpt} — [markdown](${SITE_URL}/episodes/${slug}/md)`;
   });

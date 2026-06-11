@@ -1,7 +1,14 @@
+import { YOUTUBE_URL } from '@/lib/site';
+
 export const APPLE_PODCAST_ID = '1753575420';
 export const SPOTIFY_SHOW_ID = '1Yvaa7UTq6wM2yNYjxYcTr';
 
 export const PLATFORMS = [
+  {
+    id: 'youtube',
+    label: 'YouTube',
+    href: YOUTUBE_URL,
+  },
   {
     id: 'apple',
     label: 'Apple Podcasts',

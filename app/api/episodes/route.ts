@@ -1,4 +1,4 @@
-import { getEpisodes, generateSlug } from '@/lib/episodes';
+import { getEpisodes } from '@/lib/episodes';
 import { episodeToPublic } from '@/lib/episode-public';
 import {
   transcriptFlagsForEpisodes,
@@ -32,9 +32,12 @@ export async function GET() {
         telegram: TELEGRAM_URL,
       },
       episodes: episodes.map((ep) => {
-        const slug = generateSlug(ep);
-        const hasT = flags.get(slug) ?? false;
-        return episodeToPublic(ep, hasT, hasT ? getTranscriptUrl(slug) : null);
+        const hasT = flags.get(ep.slug) ?? false;
+        return episodeToPublic(
+          ep,
+          hasT,
+          hasT ? getTranscriptUrl(ep.slug) : null,
+        );
       }),
     },
     {

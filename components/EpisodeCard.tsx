@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Episode } from '@/lib/episodes';
-import { formatDate, formatDuration, generateSlug } from '@/lib/episodes';
+import { formatDate, formatDuration, safeToISOString } from '@/lib/episodes';
 import { PlayButton } from '@/components/PlayButton';
 
 export function EpisodeCard({ episode }: { episode: Episode }) {
@@ -15,14 +15,19 @@ export function EpisodeCard({ episode }: { episode: Episode }) {
         )}
       </div>
 
-      <Link href={`/episodes/${generateSlug(episode)}`} className="ep__info">
+      <Link href={`/episodes/${episode.slug}`} className="ep__info">
         {episode.episodeNumber > 0 && (
           <span className="ep__num">Эп. {episode.episodeNumber}</span>
         )}
         <h2 className="ep__title">{episode.title}</h2>
-        <time className="ep__date" dateTime={episode.publishDate.toISOString()}>
-          {formatDate(episode.publishDate)}
-        </time>
+        {formatDate(episode.publishDate) && (
+          <time
+            className="ep__date"
+            dateTime={safeToISOString(episode.publishDate)}
+          >
+            {formatDate(episode.publishDate)}
+          </time>
+        )}
       </Link>
     </article>
   );

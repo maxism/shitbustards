@@ -4,9 +4,10 @@ import type { Metadata } from 'next';
 import {
   getEpisodes,
   getEpisodeBySlug,
-  generateSlug,
   formatDate,
   formatDuration,
+  getEpisodeNeighbors,
+  safeToISOString,
 } from '@/lib/episodes';
 import {
   buildBreadcrumbJsonLd,
@@ -14,6 +15,7 @@ import {
   getMetaDescription,
 } from '@/lib/episode-public';
 import { getEpisodePlatformLinks } from '@/lib/platform-episode-index';
+import { sanitizeEpisodeHtml } from '@/lib/sanitize-html';
 import { readTranscript, getTranscriptUrl } from '@/lib/transcripts';
 import { SITE_NAME, SITE_URL } from '@/lib/site';
 import { EpisodePlayTrigger } from './EpisodePlayTrigger';
@@ -22,7 +24,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const episodes = await getEpisodes();
-  return episodes.map((ep) => ({ slug: generateSlug(ep) }));
+  return episodes.map((ep) => ({ slug: ep.slug }));
 }
 
 export async function generateMetadata({
@@ -49,6 +51,8 @@ export async function generateMetadata({
     ]),
   ];
 
+  const publishedTime = safeToISOString(ep.publishDate);
+
   return {
     title: ep.title,
     description,
@@ -60,10 +64,11 @@ export async function generateMetadata({
       siteName: SITE_NAME,
       locale: 'ru_RU',
       type: 'article',
+      ...(publishedTime && { publishedTime }),
       images: [{ url: ep.imageUrl, width: 600, height: 600, alt: ep.title }],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: `${ep.title} — ${SITE_NAME}`,
       description,
       images: [{ url: ep.imageUrl, alt: ep.title }],
@@ -82,12 +87,10 @@ export default async function EpisodePage({
 }) {
   const { slug } = await params;
   const episodes = await getEpisodes();
-  const epIndex = episodes.findIndex((e) => generateSlug(e) === slug);
-  const ep = epIndex >= 0 ? episodes[epIndex] : null;
+  const ep = episodes.find((e) => e.slug === slug) ?? null;
   if (!ep) notFound();
 
-  const prevEp = epIndex > 0 ? episodes[epIndex - 1] : null;
-  const nextEp = epIndex < episodes.length - 1 ? episodes[epIndex + 1] : null;
+  const { prev: prevEp, next: nextEp } = getEpisodeNeighbors(episodes, slug);
 
   const transcript = readTranscript(slug);
   const transcriptUrl = getTranscriptUrl(slug);
@@ -97,6 +100,8 @@ export default async function EpisodePage({
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(ep, slug);
   const platformLinks = await getEpisodePlatformLinks(ep.title);
+  const safeDescription = sanitizeEpisodeHtml(ep.description);
+  const publishDateIso = safeToISOString(ep.publishDate);
 
   return (
     <>
@@ -121,9 +126,9 @@ export default async function EpisodePage({
           <p className="episode-meta">
             {ep.episodeNumber > 0 && `Эп. ${ep.episodeNumber} · `}
             {ep.season > 0 && `Сезон ${ep.season} · `}
-            <time dateTime={ep.publishDate.toISOString()}>
-              {formatDate(ep.publishDate)}
-            </time>
+            {formatDate(ep.publishDate) && (
+              <time dateTime={publishDateIso}>{formatDate(ep.publishDate)}</time>
+            )}
             {ep.durationSec > 0 && ` · ${formatDuration(ep.durationSec)}`}
           </p>
 
@@ -154,10 +159,10 @@ export default async function EpisodePage({
         </ul>
       </section>
 
-      {ep.description && (
+      {safeDescription && (
         <div
           className="episode-description"
-          dangerouslySetInnerHTML={{ __html: ep.description }}
+          dangerouslySetInnerHTML={{ __html: safeDescription }}
         />
       )}
 
@@ -171,7 +176,7 @@ export default async function EpisodePage({
       <nav className="episode-nav" aria-label="Другие эпизоды">
         {prevEp ? (
           <Link
-            href={`/episodes/${generateSlug(prevEp)}`}
+            href={`/episodes/${prevEp.slug}`}
             className="episode-nav__link episode-nav__prev"
           >
             <span className="episode-nav__dir">← Предыдущий</span>
@@ -182,7 +187,7 @@ export default async function EpisodePage({
         )}
         {nextEp && (
           <Link
-            href={`/episodes/${generateSlug(nextEp)}`}
+            href={`/episodes/${nextEp.slug}`}
             className="episode-nav__link episode-nav__next"
           >
             <span className="episode-nav__dir">Следующий →</span>

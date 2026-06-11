@@ -1,12 +1,17 @@
 import type { MetadataRoute } from 'next';
-import { getEpisodes, generateSlug } from '@/lib/episodes';
+import { getEpisodes } from '@/lib/episodes';
 import { SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const episodes = await getEpisodes();
-  const latestEpisodeDate = episodes[0]?.publishDate ?? new Date();
+  const latestEpisodeDate =
+    episodes.length > 0
+      ? new Date(
+          Math.max(...episodes.map((ep) => ep.publishDate.getTime())),
+        )
+      : new Date();
 
   return [
     {
@@ -22,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     },
     ...episodes.map((ep) => ({
-      url: `${SITE_URL}/episodes/${generateSlug(ep)}`,
+      url: `${SITE_URL}/episodes/${ep.slug}`,
       lastModified: ep.publishDate,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
