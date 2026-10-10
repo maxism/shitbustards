@@ -1,8 +1,7 @@
-import type { NextConfig } from 'next';
-
 const isStaticExport = !!process.env.STATIC_EXPORT;
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: isStaticExport ? 'export' : undefined,
   trailingSlash: isStaticExport,
   images: {
