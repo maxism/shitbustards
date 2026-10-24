@@ -1,38 +1,31 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
-import prettier from 'eslint-plugin-prettier/recommended';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
-  prettier,
+export default defineConfig([
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'next-env.d.ts',
+    '.claude/**',
+    '.claude-flow/**',
+    '.swarm/**',
+  ]),
+  ...nextVitals,
+  ...nextTs,
+  eslintConfigPrettier,
   {
     rules: {
-      'prettier/prettier': 'error',
       '@typescript-eslint/consistent-type-imports': [
         'error',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports',
-        },
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
       ],
       '@typescript-eslint/no-unused-vars': [
         'error',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
-];
-
-export default eslintConfig;
+]);

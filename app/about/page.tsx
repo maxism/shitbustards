@@ -109,7 +109,7 @@ export default function AboutPage() {
             <Link href="/feed.xml">feed.xml</Link> — RSS на нашем домене
           </li>
           <li>
-            <Link href="/sitemap.xml">sitemap.xml</Link>
+            <a href="/sitemap.xml">sitemap.xml</a>
           </li>
           <li>
             Markdown эпизода: <code>/episodes/&#123;slug&#125;/md</code>

@@ -9,20 +9,21 @@ code in this repository.
 npm run dev          # dev server at http://localhost:3001
 npm run build        # production build (also type-checks)
 npm run start        # serve production build
-npm run lint         # ESLint (next/core-web-vitals + Prettier)
+npm run lint         # ESLint 10 flat config (eslint-config-next + Prettier)
 npm run lint:fix     # ESLint with auto-fix
 npm run format       # Prettier write
 npm run format:check # Prettier check (CI)
-npx tsc --noEmit     # standalone type-check without building
+npm run typecheck    # type-check with TypeScript 7 (native tsc)
+npm test             # Vitest unit tests (tests/)
 ```
 
-No test runner is configured.
+Node 24 (see `.nvmrc`). Next config enables the React Compiler and typed routes.
 
 ## Architecture
 
-**Stack:** Next.js 15 App Router + React 19 + TypeScript. No CSS framework — all
-styles in one file (`app/globals.css`, BEM naming). Only runtime dependency
-beyond Next.js is `fast-xml-parser`.
+**Stack:** Next.js 16 (Turbopack) App Router + React 19 + TypeScript. No CSS
+framework — all styles in one file (`app/globals.css`, BEM naming). Only runtime
+dependency beyond Next.js is `fast-xml-parser`.
 
 **Data source:** Mave.digital RSS feed (`https://cloud.mave.digital/54964`).
 `lib/episodes.ts` fetches and parses it into `Episode[]`. The page uses

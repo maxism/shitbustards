@@ -17,3 +17,6 @@ ruvector.db
 .DS_Store
 
 .vscode/
+
+# Generated
+next-env.d.ts
